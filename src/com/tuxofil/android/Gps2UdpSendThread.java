@@ -16,7 +16,7 @@ public class Gps2UdpSendThread extends Thread {
      * Constructor.
      */
     public Gps2UdpSendThread(Gps2UdpService master) {
-	this.master = master;
+        this.master = master;
     }
 
     /**
@@ -24,40 +24,40 @@ public class Gps2UdpSendThread extends Thread {
      */
     @Override
     public void run() {
-	Config config = master.getConfig();
-	while (config.isEnabled()) {
-	    send(config.getHost(), config.getPort(),
-		 getLocation().concat("\n"));
-	    try {
-		sleep(config.getPeriod() * 1000);
-	    } catch (InterruptedException e) {
-		break;
-	    }
-	}
+        Config config = master.getConfig();
+        while (config.isEnabled()) {
+            send(config.getHost(), config.getPort(),
+                 getLocation().concat("\n"));
+            try {
+                sleep(config.getPeriod() * 1000);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
     }
 
     /**
      * Fetch and return encoded Geo location.
      */
     private String getLocation() {
-	// TODO: implement
-	return "GPS2UDP HALO";
+        // TODO: implement
+        return "GPS2UDP HALO";
     }
 
     /**
      * Send the UDP datagram to the remote server.
      */
     private void send(String host, int port, String message) {
-	try {
-	    byte[] bytes = message.getBytes();
-	    InetAddress address = InetAddress.getByName(host);
-	    DatagramPacket packet =
-		new DatagramPacket(bytes, bytes.length, address, port);
-	    DatagramSocket socket = new DatagramSocket();
-	    socket.send(packet);
-	    socket.close();
-	} catch (Exception e) {
-	    System.err.println(e);
-	}
+        try {
+            byte[] bytes = message.getBytes();
+            InetAddress address = InetAddress.getByName(host);
+            DatagramPacket packet =
+                new DatagramPacket(bytes, bytes.length, address, port);
+            DatagramSocket socket = new DatagramSocket();
+            socket.send(packet);
+            socket.close();
+        } catch (Exception e) {
+            System.err.println(e);
+        }
     }
 }

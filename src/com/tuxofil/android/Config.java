@@ -24,47 +24,47 @@ public class Config {
      * Create link to the application's persistent configuration storage.
      */
     public Config(Context context) {
-	sharedPreferences =
-	    PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences =
+            PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     /**
      * Return if daemon is enabled or not.
      */
     public boolean isEnabled() {
-	return sharedPreferences.getBoolean(CFG_ENABLED, DEF_ENABLED);
+        return sharedPreferences.getBoolean(CFG_ENABLED, DEF_ENABLED);
     }
 
     /**
      * Return remote host name or address.
      */
     public String getHost() {
-	return sharedPreferences.getString(CFG_HOST, DEF_HOST);
+        return sharedPreferences.getString(CFG_HOST, DEF_HOST);
     }
 
     /**
      * Return remote UDP port number.
      */
     public int getPort() {
-	return sharedPreferences.getInt(CFG_PORT, DEF_PORT);
+        return sharedPreferences.getInt(CFG_PORT, DEF_PORT);
     }
 
     /**
      * Return send period.
      */
     public int getPeriod() {
-	return sharedPreferences.getInt(CFG_PERIOD, DEF_PERIOD);
+        return sharedPreferences.getInt(CFG_PERIOD, DEF_PERIOD);
     }
 
     /**
      * Set new values for the configuration items.
      */
     public void set(boolean enabled, String host, int port, int period) {
-	SharedPreferences.Editor editor = sharedPreferences.edit();
-	editor.putBoolean(CFG_ENABLED, enabled);
-	editor.putString(CFG_HOST, host);
-	editor.putInt(CFG_PORT, port);
-	editor.putInt(CFG_PERIOD, period);
-	editor.apply();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(CFG_ENABLED, enabled);
+        editor.putString(CFG_HOST, host);
+        editor.putInt(CFG_PORT, port);
+        editor.putInt(CFG_PERIOD, period);
+        editor.apply();
     }
 }

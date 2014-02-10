@@ -9,9 +9,9 @@ import android.os.IBinder;
 public class Gps2UdpService extends Service {
 
     public static final String ACTION_START =
-	"com.tuxofil.android.gps2udp.action.START";
+        "com.tuxofil.android.gps2udp.action.START";
     public static final String ACTION_STOP =
-	"com.tuxofil.android.gps2udp.action.STOP";
+        "com.tuxofil.android.gps2udp.action.STOP";
 
     private Gps2UdpSendThread payload;
 
@@ -20,7 +20,7 @@ public class Gps2UdpService extends Service {
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-	return START_STICKY;
+        return START_STICKY;
     }
 
     /**
@@ -28,9 +28,9 @@ public class Gps2UdpService extends Service {
      */
     @Override
     public void onCreate() {
-	payload = new Gps2UdpSendThread(this);
-	payload.start();
-	popUp("GPS 2 UDP Daemon Started");
+        payload = new Gps2UdpSendThread(this);
+        payload.start();
+        popUp("GPS 2 UDP Daemon Started");
     }
 
     /**
@@ -38,12 +38,12 @@ public class Gps2UdpService extends Service {
      */
     @Override
     public void onDestroy() {
-	try {
-	    payload.join();
-	} catch (InterruptedException e) {
-	    popUp("GPS 2 UDP: join interrupted");
-	}
-	popUp("GPS 2 UDP Daemon Terminated");
+        try {
+            payload.join();
+        } catch (InterruptedException e) {
+            popUp("GPS 2 UDP: join interrupted");
+        }
+        popUp("GPS 2 UDP Daemon Terminated");
     }
 
     /**
@@ -51,17 +51,17 @@ public class Gps2UdpService extends Service {
      */
     @Override
     public IBinder onBind(Intent intent) {
-	return null;
+        return null;
     }
 
     /**
      * Show a tiny popup notification.
      */
     private void popUp(CharSequence message) {
-	Context context = getApplicationContext();
-	int duration = Toast.LENGTH_SHORT;
-	Toast toast = Toast.makeText(context, message, duration);
-	toast.show();
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, message, duration);
+        toast.show();
     }
 
     /**
@@ -70,6 +70,6 @@ public class Gps2UdpService extends Service {
      * obtain current configurations.
      */
     public Config getConfig() {
-	return new Config(this);
+        return new Config(this);
     }
 }
