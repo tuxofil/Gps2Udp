@@ -4,6 +4,10 @@ import android.content.Context;
 import android.preference.PreferenceManager;
 import android.content.SharedPreferences;
 
+/**
+ * The class provides an interface to application's
+ * persistent configuration storage.
+ */
 public class Config {
 
     // Configuration item identifiers.

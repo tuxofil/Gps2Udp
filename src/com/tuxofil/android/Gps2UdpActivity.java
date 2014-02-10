@@ -8,6 +8,9 @@ import android.content.Intent;
 import android.widget.ToggleButton;
 import android.widget.EditText;
 
+/**
+ * Represents application's user interface.
+ */
 public class Gps2UdpActivity extends Activity {
 
     /**
