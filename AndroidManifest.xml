@@ -13,12 +13,8 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <service android:name="Gps2UdpService"
-             android:exported="false">
-      <intent-filter>
-        <action android:name="com.mooo.tuxofil.gps2udp.START" />
-        <action android:name="com.mooo.tuxofil.gps2udp.STOP" />
-      </intent-filter>
-    </service>
+    <receiver android:name=".Gps2UdpAlarmReceiver"
+              android:enabled="true">
+    </receiver>
   </application>
 </manifest>

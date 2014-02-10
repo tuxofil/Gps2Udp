@@ -13,6 +13,8 @@ import android.widget.EditText;
  */
 public class Gps2UdpActivity extends Activity {
 
+    private Gps2UdpAlarmReceiver receiver;
+
     /**
      * Called when the activity is first created.
      */
@@ -20,6 +22,7 @@ public class Gps2UdpActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        receiver = new Gps2UdpAlarmReceiver();
         Config config = new Config(this);
         ((ToggleButton) findViewById(R.id.btn_enabled)).
             setChecked(config.isEnabled());
@@ -29,8 +32,6 @@ public class Gps2UdpActivity extends Activity {
             setText(String.valueOf(config.getPort()));
         ((EditText) findViewById(R.id.send_period)).
             setText(String.valueOf(config.getPeriod()));
-        // automatically start the background service if not started yet
-        setDaemonEnabled(config.isEnabled());
     }
 
     /**
@@ -47,7 +48,8 @@ public class Gps2UdpActivity extends Activity {
      * Called when Enable/Disable button clicked.
      */
     public void onOnOffClicked(View view) {
-        setDaemonEnabled(((ToggleButton) view).isChecked());
+        applyConfigs();
+        setDaemonEnabled(true);
     }
 
     /**
@@ -84,10 +86,6 @@ public class Gps2UdpActivity extends Activity {
      * Enable or disable the daemon according to the argument value.
      */
     private void setDaemonEnabled(boolean enabled) {
-        if (enabled) {
-            startService(new Intent(Gps2UdpService.ACTION_START));
-        } else {
-            stopService(new Intent(Gps2UdpService.ACTION_STOP));
-        }
+        receiver.schedule(this);
     }
 }
