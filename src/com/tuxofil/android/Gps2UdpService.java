@@ -6,10 +6,6 @@ import android.content.Context;
 import android.widget.Toast;
 import android.os.IBinder;
 
-import java.net.DatagramSocket;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-
 public class Gps2UdpService extends Service {
 
     public static final String ACTION_START =
@@ -17,44 +13,7 @@ public class Gps2UdpService extends Service {
     public static final String ACTION_STOP =
 	"com.tuxofil.android.gps2udp.action.STOP";
 
-    private final class Payload extends Thread {
-
-	/**
-	 * Thread entry point.
-	 */
-	@Override
-	public void run() {
-	    while (! stop) {
-		send(config.getHost(), config.getPort(), "GPS2UDP HALO\n");
-		try {
-		    sleep(config.getPeriod() * 1000);
-		} catch (InterruptedException e) {
-		    break;
-		}
-	    }
-	}
-
-	/**
-	 * Send the UDP datagram to the remote server.
-	 */
-	private void send(String host, int port, String message) {
-	    try {
-		byte[] bytes = message.getBytes();
-		InetAddress address = InetAddress.getByName(host);
-		DatagramPacket packet =
-		    new DatagramPacket(bytes, bytes.length, address, port);
-		DatagramSocket socket = new DatagramSocket();
-		socket.send(packet);
-		socket.close();
-	    } catch (Exception e) {
-		System.err.println(e);
-	    }
-	}
-    }
-
-    private Config config;
-    private Payload payload = new Payload();
-    private boolean stop = false;
+    private Gps2UdpSendThread payload;
 
     /**
      * Called each time Context.startService(Intent) is called.
@@ -69,8 +28,7 @@ public class Gps2UdpService extends Service {
      */
     @Override
     public void onCreate() {
-	config = new Config(this);
-	stop = false;
+	payload = new Gps2UdpSendThread(this);
 	payload.start();
 	popUp("GPS 2 UDP Daemon Started");
     }
@@ -80,7 +38,6 @@ public class Gps2UdpService extends Service {
      */
     @Override
     public void onDestroy() {
-	stop = true;
 	try {
 	    payload.join();
 	} catch (InterruptedException e) {
@@ -105,5 +62,14 @@ public class Gps2UdpService extends Service {
 	int duration = Toast.LENGTH_SHORT;
 	Toast toast = Toast.makeText(context, message, duration);
 	toast.show();
+    }
+
+    /**
+     * Getter for the configuration storage object.
+     * Called from instance of Gps2UdpSendThread class to
+     * obtain current configurations.
+     */
+    public Config getConfig() {
+	return new Config(this);
     }
 }
