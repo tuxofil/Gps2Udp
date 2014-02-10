@@ -29,11 +29,8 @@ public class Gps2UdpActivity extends Activity {
             setText(String.valueOf(config.getPort()));
         ((EditText) findViewById(R.id.send_period)).
             setText(String.valueOf(config.getPeriod()));
-	if (config.isEnabled()) {
-	    // automatically start the background service
-	    // if not started yet
-            startService(new Intent(Gps2UdpService.ACTION_START));
-	}
+	// automatically start the background service if not started yet
+	setDaemonEnabled(config.isEnabled());
     }
 
     /**
@@ -50,11 +47,7 @@ public class Gps2UdpActivity extends Activity {
      * Called when Enable/Disable button clicked.
      */
     public void onOnOffClicked(View view) {
-        if (((ToggleButton) view).isChecked()) {
-            startService(new Intent(Gps2UdpService.ACTION_START));
-        } else {
-            stopService(new Intent(Gps2UdpService.ACTION_STOP));
-        }
+	setDaemonEnabled(((ToggleButton) view).isChecked());
     }
 
     /**
@@ -85,5 +78,16 @@ public class Gps2UdpActivity extends Activity {
      */
     private String _getText(int id) {
         return ((EditText) findViewById(id)).getText().toString();
+    }
+
+    /**
+     * Enable or disable the daemon according to the argument value.
+     */
+    private void setDaemonEnabled(boolean enabled) {
+	if (enabled) {
+            startService(new Intent(Gps2UdpService.ACTION_START));
+        } else {
+            stopService(new Intent(Gps2UdpService.ACTION_STOP));
+	}
     }
 }
