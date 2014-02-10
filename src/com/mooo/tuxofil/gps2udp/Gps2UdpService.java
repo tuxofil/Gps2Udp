@@ -1,4 +1,4 @@
-package com.tuxofil.android;
+package com.mooo.tuxofil.gps2udp;
 
 import android.app.Service;
 import android.content.Intent;
@@ -9,9 +9,9 @@ import android.os.IBinder;
 public class Gps2UdpService extends Service {
 
     public static final String ACTION_START =
-        "com.tuxofil.android.gps2udp.action.START";
+        "com.mooo.tuxofil.gps2udp.START";
     public static final String ACTION_STOP =
-        "com.tuxofil.android.gps2udp.action.STOP";
+        "com.mooo.tuxofil.gps2udp.STOP";
 
     private Gps2UdpSendThread payload;
 

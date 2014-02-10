@@ -1,4 +1,4 @@
-package com.tuxofil.android;
+package com.mooo.tuxofil.gps2udp;
 
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;

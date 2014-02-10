@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.tuxofil.android"
+          package="com.mooo.tuxofil.gps2udp"
           android:versionCode="1"
           android:versionName="1.0">
   <uses-permission android:name="android.permission.INTERNET" />
@@ -16,8 +16,8 @@
     <service android:name="Gps2UdpService"
              android:exported="false">
       <intent-filter>
-        <action android:name="com.tuxofil.android.gps2udp.action.START" />
-        <action android:name="com.tuxofil.android.gps2udp.action.STOP" />
+        <action android:name="com.mooo.tuxofil.gps2udp.START" />
+        <action android:name="com.mooo.tuxofil.gps2udp.STOP" />
       </intent-filter>
     </service>
   </application>
