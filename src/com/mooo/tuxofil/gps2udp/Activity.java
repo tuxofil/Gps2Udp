@@ -12,8 +12,6 @@ import android.widget.EditText;
  */
 public class Activity extends android.app.Activity {
 
-    private Receiver receiver;
-
     /**
      * Called when the activity is first created.
      */
@@ -21,7 +19,6 @@ public class Activity extends android.app.Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        receiver = new Receiver();
         Config config = new Config(this);
         ((ToggleButton) findViewById(R.id.btn_enabled)).
             setChecked(config.isEnabled());
@@ -48,7 +45,7 @@ public class Activity extends android.app.Activity {
      */
     public void onOnOffClicked(View view) {
         applyConfigs();
-        setDaemonEnabled(true);
+        (new Receiver()).schedule(this);
     }
 
     /**
@@ -79,12 +76,5 @@ public class Activity extends android.app.Activity {
      */
     private String _getText(int id) {
         return ((EditText) findViewById(id)).getText().toString();
-    }
-
-    /**
-     * Enable or disable the daemon according to the argument value.
-     */
-    private void setDaemonEnabled(boolean enabled) {
-        receiver.schedule(this);
     }
 }
