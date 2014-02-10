@@ -29,6 +29,11 @@ public class Gps2UdpActivity extends Activity {
             setText(String.valueOf(config.getPort()));
         ((EditText) findViewById(R.id.send_period)).
             setText(String.valueOf(config.getPeriod()));
+	if (config.isEnabled()) {
+	    // automatically start the background service
+	    // if not started yet
+            startService(new Intent(Gps2UdpService.ACTION_START));
+	}
     }
 
     /**
