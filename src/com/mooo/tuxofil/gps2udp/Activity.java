@@ -1,7 +1,6 @@
 package com.mooo.tuxofil.gps2udp;
 
 import android.view.View;
-import android.app.Activity;
 import android.os.Bundle;
 import android.content.Intent;
 
@@ -11,9 +10,9 @@ import android.widget.EditText;
 /**
  * Represents application's user interface.
  */
-public class Gps2UdpActivity extends Activity {
+public class Activity extends android.app.Activity {
 
-    private Gps2UdpAlarmReceiver receiver;
+    private Receiver receiver;
 
     /**
      * Called when the activity is first created.
@@ -22,7 +21,7 @@ public class Gps2UdpActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        receiver = new Gps2UdpAlarmReceiver();
+        receiver = new Receiver();
         Config config = new Config(this);
         ((ToggleButton) findViewById(R.id.btn_enabled)).
             setChecked(config.isEnabled());

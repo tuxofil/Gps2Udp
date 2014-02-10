@@ -15,7 +15,7 @@ import java.net.InetAddress;
  * Implements alarm receiver and facility to enable/disable
  * the periodic alarms.
  */
-public class Gps2UdpAlarmReceiver extends BroadcastReceiver {
+public class Receiver extends BroadcastReceiver {
 
     /**
      * Called each time device is waked up for alarm processing.
