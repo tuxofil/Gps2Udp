@@ -1,5 +1,7 @@
 package com.mooo.tuxofil.gps2udp;
 
+import java.util.Locale;
+
 import android.content.BroadcastReceiver;
 import android.app.AlarmManager;
 import android.content.Intent;
@@ -11,20 +13,76 @@ import java.net.DatagramSocket;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+
 /**
  * Implements alarm receiver and facility to enable/disable
  * the periodic alarms.
  */
-public class Receiver extends BroadcastReceiver {
+public class Receiver extends BroadcastReceiver
+    implements LocationListener {
+
+    private Config config;
+    private Context context;
 
     /**
      * Called each time device is waked up for alarm processing.
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        Config config = new Config(context);
-        send(config.getHost(), config.getPort(), getLocation());
+        LocationManager manager =
+            (LocationManager)
+            context.getSystemService(Context.LOCATION_SERVICE);
+        this.config = new Config(context);
+        this.context = context;
+        manager.requestSingleUpdate(getCriteria(config), this, null);
+    }
+
+    // -------------------------------------------------------------------
+    // LocationListener callbacks
+    // -------------------------------------------------------------------
+
+    public void onLocationChanged(Location location) {
+        String formattedLocation = formatLocation(location);
+        send(config.getHost(), config.getPort(),
+             formattedLocation + "\n");
         schedule(context);
+    }
+
+    public void onProviderDisabled(String provider) {
+    }
+
+    public void onProviderEnabled(String provider) {
+    }
+
+    public void onStatusChanged(String provider, int status,
+                                  Bundle extras) {
+    }
+
+    // -------------------------------------------------------------------
+    // Auxiliary private methods
+    // -------------------------------------------------------------------
+
+    /**
+     * Create a location provider criteria object.
+     */
+    private Criteria getCriteria(Config config) {
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        criteria.setBearingAccuracy(Criteria.NO_REQUIREMENT);
+        criteria.setBearingRequired(false);
+        criteria.setCostAllowed(true);
+        criteria.setHorizontalAccuracy(Criteria.ACCURACY_HIGH);
+        criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);
+        criteria.setSpeedAccuracy(Criteria.NO_REQUIREMENT);
+        criteria.setSpeedRequired(false);
+        criteria.setVerticalAccuracy(Criteria.NO_REQUIREMENT);
+        criteria.setAltitudeRequired(false);
+        return criteria;
     }
 
     /**
@@ -53,12 +111,20 @@ public class Receiver extends BroadcastReceiver {
     }
 
     /**
-     * Fetch and return encoded Geo location.
+     * Format Location to a string.
      */
-    private String getLocation() {
-        String time = String.valueOf(System.currentTimeMillis() / 1000);
-        // TODO: implement
-        return time + " GPS2UDP HALO\n";
+    private String formatLocation(Location location) {
+        long time = location.getTime() / 1000;
+        float accuracy = -1;
+        if(location.hasAccuracy())
+            accuracy = location.getAccuracy();
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        return
+            String.valueOf(time) + " " +
+            String.format(Locale.US, "%1.6f %1.6f",
+                          latitude, longitude) + " " +
+            String.valueOf((long)accuracy);
     }
 
     /**
