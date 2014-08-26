@@ -72,16 +72,24 @@ public class Receiver extends BroadcastReceiver
      */
     private Criteria getCriteria(Config config) {
         Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        // common requirements
         criteria.setBearingAccuracy(Criteria.NO_REQUIREMENT);
         criteria.setBearingRequired(false);
         criteria.setCostAllowed(true);
-        criteria.setHorizontalAccuracy(Criteria.ACCURACY_HIGH);
-        criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);
         criteria.setSpeedAccuracy(Criteria.NO_REQUIREMENT);
         criteria.setSpeedRequired(false);
         criteria.setVerticalAccuracy(Criteria.NO_REQUIREMENT);
         criteria.setAltitudeRequired(false);
+        if(config.isBestAccuracy()){
+            // for the best accuracy
+            criteria.setAccuracy(Criteria.ACCURACY_FINE);
+            criteria.setHorizontalAccuracy(Criteria.ACCURACY_HIGH);
+            criteria.setPowerRequirement(Criteria.POWER_HIGH);
+        }else{
+            criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+            criteria.setHorizontalAccuracy(Criteria.ACCURACY_LOW);
+            criteria.setPowerRequirement(Criteria.POWER_LOW);
+        }
         return criteria;
     }
 

@@ -4,6 +4,7 @@ import android.view.View;
 import android.os.Bundle;
 import android.content.Intent;
 
+import android.widget.CheckBox;
 import android.widget.ToggleButton;
 import android.widget.EditText;
 
@@ -28,6 +29,8 @@ public class Activity extends android.app.Activity {
             setText(String.valueOf(config.getPort()));
         ((EditText) findViewById(R.id.send_period)).
             setText(String.valueOf(config.getPeriod()));
+        ((CheckBox) findViewById(R.id.best_accuracy)).
+            setChecked(config.isBestAccuracy());
     }
 
     /**
@@ -68,7 +71,9 @@ public class Activity extends android.app.Activity {
         if (port > 0xffff) port = 0xffff;
         int period = Integer.parseInt(_getText(R.id.send_period));
         if (period < 1) period = 1;
-        (new Config(this)).set(enabled, host, port, period);
+        boolean bestAccuracy =
+            ((CheckBox) findViewById(R.id.best_accuracy)).isChecked();
+        (new Config(this)).set(enabled, host, port, period, bestAccuracy);
     }
 
     /**

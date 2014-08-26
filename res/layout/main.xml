@@ -41,6 +41,12 @@
       android:layout_height="wrap_content"
       android:text="1"
       android:inputType="number"/>
+  <CheckBox
+      android:id="@+id/best_accuracy"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="The best accuracy"
+      android:hint="Consumes more power"/>
   <Button
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
