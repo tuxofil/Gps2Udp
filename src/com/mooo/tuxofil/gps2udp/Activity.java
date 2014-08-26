@@ -65,7 +65,7 @@ public class Activity extends android.app.Activity {
         String host = _getText(R.id.dst_host);
         int port = Integer.parseInt(_getText(R.id.dst_port));
         if (port < 1) port = 1;
-        if (port >= 0xffff) port = 0xffff - 1;
+        if (port > 0xffff) port = 0xffff;
         int period = Integer.parseInt(_getText(R.id.send_period));
         if (period < 1) period = 1;
         (new Config(this)).set(enabled, host, port, period);
