@@ -47,6 +47,11 @@
       android:layout_height="wrap_content"
       android:text="The best accuracy"
       android:hint="Consumes more power"/>
+  <CheckBox
+      android:id="@+id/paid_sources"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Use paid Geo sources, if available"/>
   <Button
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"

@@ -16,6 +16,7 @@ public class Config {
     public static final String CFG_PORT = "cfg_port";
     public static final String CFG_PERIOD = "cfg_period";
     public static final String CFG_BEST_ACCURACY = "cfg_best_accuracy";
+    public static final String CFG_PAID_SOURCES = "cfg_paid_sources";
 
     // Default values for the configuration items
     private static final boolean DEF_ENABLED = false;
@@ -23,6 +24,7 @@ public class Config {
     private static final int DEF_PORT = 5000;
     private static final int DEF_PERIOD = 1;
     private static final boolean DEF_BEST_ACCURACY = false;
+    private static final boolean DEF_PAID_SOURCES = false;
 
     private SharedPreferences sharedPreferences;
 
@@ -71,16 +73,25 @@ public class Config {
     }
 
     /**
+     * Return true if usage of paid Geo sources is permitted.
+     */
+    public boolean isPaidSources() {
+        return sharedPreferences.getBoolean(CFG_PAID_SOURCES,
+                                            DEF_PAID_SOURCES);
+    }
+
+    /**
      * Set new values for the configuration items.
      */
     public void set(boolean enabled, String host, int port, int period,
-                    boolean bestAccuracy) {
+                    boolean bestAccuracy, boolean paidSources) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(CFG_ENABLED, enabled);
         editor.putString(CFG_HOST, host);
         editor.putInt(CFG_PORT, port);
         editor.putInt(CFG_PERIOD, period);
         editor.putBoolean(CFG_BEST_ACCURACY, bestAccuracy);
+        editor.putBoolean(CFG_PAID_SOURCES, paidSources);
         editor.apply();
     }
 }

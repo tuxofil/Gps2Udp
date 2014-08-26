@@ -31,6 +31,8 @@ public class Activity extends android.app.Activity {
             setText(String.valueOf(config.getPeriod()));
         ((CheckBox) findViewById(R.id.best_accuracy)).
             setChecked(config.isBestAccuracy());
+        ((CheckBox) findViewById(R.id.paid_sources)).
+            setChecked(config.isPaidSources());
     }
 
     /**
@@ -73,7 +75,10 @@ public class Activity extends android.app.Activity {
         if (period < 1) period = 1;
         boolean bestAccuracy =
             ((CheckBox) findViewById(R.id.best_accuracy)).isChecked();
-        (new Config(this)).set(enabled, host, port, period, bestAccuracy);
+        boolean paidSources =
+            ((CheckBox) findViewById(R.id.paid_sources)).isChecked();
+        (new Config(this)).set(enabled, host, port, period,
+                               bestAccuracy, paidSources);
     }
 
     /**

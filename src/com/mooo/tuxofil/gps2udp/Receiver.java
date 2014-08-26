@@ -75,7 +75,7 @@ public class Receiver extends BroadcastReceiver
         // common requirements
         criteria.setBearingAccuracy(Criteria.NO_REQUIREMENT);
         criteria.setBearingRequired(false);
-        criteria.setCostAllowed(true);
+        criteria.setCostAllowed(config.isPaidSources());
         criteria.setSpeedAccuracy(Criteria.NO_REQUIREMENT);
         criteria.setSpeedRequired(false);
         criteria.setVerticalAccuracy(Criteria.NO_REQUIREMENT);
