@@ -10,6 +10,7 @@ var globalUpdatePeriod = 60000;
 // internal vars
 var globalMap;
 var globalPolyline;
+var globalMarkers;
 
 // ----------------------------------------------------------------------
 // Functions
@@ -57,16 +58,24 @@ function parsePoints(text){
         var lat = parseFloat(tokens[1]);
         var lng = parseFloat(tokens[2]);
         var acc = parseFloat(tokens[3]);
-        if(acc <= globalMaxAccuracy)
-            result.push(new google.maps.LatLng(lat, lng));
+        if(acc <= globalMaxAccuracy){
+            var ll = new google.maps.LatLng(lat, lng);
+            ll.timestamp = time;
+            result.push(ll);
+        }
         i++;
     }
     return result;
 }
 
 function drawPath(points){
+    // clear path and markers
     if(globalPolyline != null)
         globalPolyline.setMap(null);
+    if(globalMarkers != null)
+        for(var i = 0; i < globalMarkers.length; i++)
+            globalMarkers[i].setMap(null);
+    // draw path
     globalPolyline =
         new google.maps.Polyline({
             path: points,
@@ -76,6 +85,17 @@ function drawPath(points){
             strokeWeight: 2
         });
     globalPolyline.setMap(globalMap);
+    // draw markers
+    globalMarkers = [];
+    for(var i = 0; i < points.length; i++){
+        var date = new Date(points[i].timestamp * 1000);
+        var marker = new google.maps.Marker({
+            position: points[i],
+            map: globalMap,
+            title: date.toUTCString()
+        });
+        globalMarkers.push(marker);
+    }
 }
 
 function initialize() {
