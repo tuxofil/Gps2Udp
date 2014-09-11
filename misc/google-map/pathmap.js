@@ -5,7 +5,7 @@
 // configuration vars
 var globalPointsFilename = "points.txt";
 var globalMaxAccuracy = 30;
-var globalUpdatePeriod = 2000;
+var globalUpdatePeriod = 60000;
 
 // internal vars
 var globalMap;
