@@ -44,6 +44,7 @@ def main():
         except Exception:
             continue
         sys.stdout.write(data)
+        sys.stdout.flush()
 
 if __name__ == '__main__':
     try:
