@@ -94,10 +94,12 @@ function drawPath(points){
     globalMarkers = [];
     for(var i = 0; i < points.length; i++){
         var date = new Date(points[i].timestamp * 1000);
+        var hint = date.toUTCString() + '\n' +
+            'Accuracy: ' + points[i].accuracy + ' meters';
         var marker = new google.maps.Marker({
             position: points[i],
             map: globalMap,
-            title: date.toUTCString()
+            title: hint
         });
         globalMarkers.push(marker);
     }
