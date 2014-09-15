@@ -70,6 +70,11 @@ function parsePoints(text){
     return result;
 }
 
+function roundNumber(number, precision){
+    var factor = Math.pow(10, precision);
+    return Math.round(number * factor) / factor;
+}
+
 function drawPath(points){
     // clear path, markers and accuracies
     if(globalPolyline != null)
@@ -92,10 +97,30 @@ function drawPath(points){
     globalPolyline.setMap(globalMap);
     // draw markers
     globalMarkers = [];
+    var start_time = 0;
+    if(points.length > 0)
+        start_time = points[0].timestamp;
+    var total_distance = 0;
     for(var i = 0; i < points.length; i++){
         var date = new Date(points[i].timestamp * 1000);
         var hint = date.toUTCString() + '\n' +
             'Accuracy: ' + points[i].accuracy + ' meters';
+        if(i > 0){
+            var distance =
+                google.maps.geometry.spherical.computeDistanceBetween(
+                    points[i - 1], points[i]);
+            if(distance > 0){
+                hint += '\nDistance: ' + roundNumber((distance / 1000), 2) + ' km';
+                total_distance += distance;
+                var elapsed = points[i].timestamp - points[i - 1].timestamp;
+                var speed = (distance / 1000) / (elapsed / 3600);
+                hint += '\nAverage speed: ' + roundNumber(speed, 1) + ' km/h';
+            }
+            hint += '\nTotal distance: ' + Math.round(total_distance / 1000) + ' km';
+            var elapsed = points[i].timestamp - start_time;
+            var total_speed = (total_distance / 1000) / (elapsed / 3600);
+            hint += '\nTotal average speed: ' + roundNumber(total_speed, 1) + ' km/h';
+        }
         var marker = new google.maps.Marker({
             position: points[i],
             map: globalMap,
