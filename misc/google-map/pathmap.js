@@ -11,6 +11,7 @@ var globalUpdatePeriod = 60000;
 var globalMap;
 var globalPolyline;
 var globalMarkers;
+var globalAccuracies;
 
 // ----------------------------------------------------------------------
 // Functions
@@ -61,6 +62,7 @@ function parsePoints(text){
         if(acc <= globalMaxAccuracy){
             var ll = new google.maps.LatLng(lat, lng);
             ll.timestamp = time;
+            ll.accuracy = acc;
             result.push(ll);
         }
         i++;
@@ -69,12 +71,15 @@ function parsePoints(text){
 }
 
 function drawPath(points){
-    // clear path and markers
+    // clear path, markers and accuracies
     if(globalPolyline != null)
         globalPolyline.setMap(null);
     if(globalMarkers != null)
         for(var i = 0; i < globalMarkers.length; i++)
             globalMarkers[i].setMap(null);
+    if(globalAccuracies != null)
+        for(var i = 0; i < globalAccuracies.length; i++)
+            globalAccuracies[i].setMap(null);
     // draw path
     globalPolyline =
         new google.maps.Polyline({
@@ -95,6 +100,19 @@ function drawPath(points){
             title: date.toUTCString()
         });
         globalMarkers.push(marker);
+    }
+    // draw accuracy circles
+    globalAccuracies = [];
+    for(var i = 0; i < points.length; i++){
+        var circle = new google.maps.Circle({
+            center: points[i],
+            radius: points[i].accuracy,
+            fillColor: '#0000FF',
+            fillOpacity: 0.07,
+            strokeWeight: 0,
+            map: globalMap
+        });
+        globalAccuracies.push(circle);
     }
 }
 
