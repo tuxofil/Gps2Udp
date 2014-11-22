@@ -134,6 +134,7 @@ function drawPath(points){
         var circle = new google.maps.Circle({
             center: points[i],
             radius: points[i].accuracy,
+            clickable: false,
             fillColor: '#0000FF',
             fillOpacity: 0.07,
             strokeWeight: 0,
