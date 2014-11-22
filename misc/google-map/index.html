@@ -9,6 +9,7 @@
     </style>
     <meta charset="utf-8">
     <title>My Map</title>
+    <script type="text/javascript" src="dtp.js"></script>
     <script
        type="text/javascript"
        src="http://maps.googleapis.com/maps/api/js?key={{KEY}}&sensor=true&libraries=geometry">
@@ -16,6 +17,59 @@
     <script type="text/javascript" src="pathmap.js"></script>
   </head>
   <body>
-    <div id="map_canvas" style="width:100%; height:100%"></div>
+    <table border=1 cellpadding=0 cellspacing=0 width="100%" height="100%">
+      <tr height=1><td><center>
+            <select
+               id=timeFilterType
+               onchange='onTimeFilterTypeChange(this)'>
+              <option value=absolute>
+                Absolute period (from S to E)</option>
+              <option value=relative selected>
+                Relative period (last N days)</option>
+            </select>
+            <span
+               id=spanTimeFilterAbs
+               style='display:none'>
+              From:
+              <script type="text/javascript">
+                var dtp_from = new MDateTimePicker(new Date(), true);
+              </script>
+              To:
+              <script type="text/javascript">
+                var dtp_to = new MDateTimePicker(new Date(), true);
+              </script>
+            </span>
+            <span id=spanTimeFilterRel>
+              Last
+              <input
+                 id=lastDaysField
+                 type=text
+                 size=3 maxlength=3
+                 onchange='onLastDaysChange(this)'>
+              <!-- Set default lastDays value  -->
+              <script type="text/javascript">
+                var domObj = document.getElementById('lastDaysField');
+                onLastDaysChange(domObj);
+              </script>
+              days;
+            </span>
+            Accuracy:
+            <input
+               id=accuracyField
+               type=text
+               size=4 maxlength=4
+               onchange='onAccuracyChange(this)'>
+            <!-- Set default accuracy value  -->
+            <script type="text/javascript">
+              var domObj = document.getElementById('accuracyField');
+              onAccuracyChange(domObj);
+            </script>
+            meters
+            <button onclick='requestPointsLoad()'>Refresh</button>
+      </center></td></tr>
+      <tr><td>
+          <div id="map_canvas" style="width:100%; height:100%"></div>
+      </td></tr>
+    </table>
   </body>
 </html>

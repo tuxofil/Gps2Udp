@@ -4,7 +4,8 @@
 
 // configuration vars
 var globalPointsFilename = "points.txt";
-var globalMaxAccuracy = 30;
+var globalDefaultMaxAccuracy = 3000;
+var globalDefaultLastDays = 7;
 var globalUpdatePeriod = 60000;
 
 // internal vars
@@ -14,8 +15,54 @@ var globalMarkers;
 var globalAccuracies;
 
 // ----------------------------------------------------------------------
+// Visible control event handlers
+// ----------------------------------------------------------------------
+
+function onLastDaysChange(domObj){
+    var intVal = parsePositiveInt(domObj, globalDefaultLastDays);
+    domObj.goodValue = intVal;
+    domObj.value = intVal;
+}
+
+function onAccuracyChange(domObj){
+    var intVal = parsePositiveInt(domObj, globalDefaultMaxAccuracy);
+    domObj.goodValue = intVal;
+    domObj.value = intVal;
+}
+
+function parsePositiveInt(domObj, defaultValue){
+    var intVal = parseInt(domObj.value);
+    if(isNaN(intVal))
+        intVal =
+        (domObj.goodValue)?
+        domObj.goodValue:defaultValue;
+    if(intVal < 1) intVal = 1;
+    return intVal;
+}
+
+function onTimeFilterTypeChange(domObj){
+    setHidden(
+        document.getElementById('spanTimeFilterAbs'),
+        domObj.value != 'absolute');
+    setHidden(
+        document.getElementById('spanTimeFilterRel'),
+        domObj.value != 'relative');
+}
+
+// ----------------------------------------------------------------------
 // Functions
 // ----------------------------------------------------------------------
+
+/**
+ * Sets or unsets 'hidden' property for the DOM object.
+ */
+function setHidden(domObj, isHidden){
+    if(isHidden){
+        domObj.style.display = 'none';
+    }else{
+        domObj.style.display = '';
+    }
+}
 
 function getXmlHttp(){
     var xmlhttp;
@@ -53,13 +100,21 @@ function parsePoints(text){
     var lines = text.split("\n");
     var i = 0;
     var result = [];
+    var accuracy =
+        parsePositiveInt(
+            document.getElementById('accuracyField'),
+            globalDefaultMaxAccuracy);
+    var minTime = getMinTime();
+    var maxTime = getMaxTime();
     while(i < lines.length){
         var tokens = lines[i].split(" ");
         var time = parseInt(tokens[0]);
         var lat = parseFloat(tokens[1]);
         var lng = parseFloat(tokens[2]);
         var acc = parseFloat(tokens[3]);
-        if(acc <= globalMaxAccuracy){
+        if(acc <= accuracy &&
+           time >= minTime &&
+           time <= maxTime){
             var ll = new google.maps.LatLng(lat, lng);
             ll.timestamp = time;
             ll.accuracy = acc;
@@ -68,6 +123,37 @@ function parsePoints(text){
         i++;
     }
     return result;
+}
+
+function getMinTime(){
+    var domObj = document.getElementById('timeFilterType');
+    if(domObj.value == 'absolute'){
+        return resetTime(dtp_from.getDate()).getTime() / 1000;
+    }else{
+        var now = new Date();
+        now = resetTime(now);
+        domObj = document.getElementById('lastDaysField');
+        var lastDays = parsePositiveInt(domObj, globalDefaultLastDays);
+        return now.getTime() / 1000 - (lastDays - 1) * 86400;
+    }
+}
+
+function getMaxTime(){
+    var domObj = document.getElementById('timeFilterType');
+    if(domObj.value == 'absolute'){
+        return resetTime(dtp_to.getDate()).getTime() / 1000 + 86400;
+    }else{
+        var now = new Date();
+        return now.getTime() / 1000;
+    }
+}
+
+function resetTime(date){
+    date.setUTCHours(0);
+    date.setUTCMinutes(0);
+    date.setUTCSeconds(0);
+    date.setUTCMilliseconds(0);
+    return date;
 }
 
 function roundNumber(number, precision){
