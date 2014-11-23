@@ -49,6 +49,12 @@ $ ./gps2udp.py [--port=PortNumber] >> file.txt
 
 Default UDP port number to listen to is 5000.
 
+To run in signed mode type:
+
+```sh
+$ GPS2UDP_SECRET=sEcReT ./gps2udp.py --signed [--port=PortNumber] >> file.txt
+```
+
 ## Test
 
 ```sh
