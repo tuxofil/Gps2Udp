@@ -12,6 +12,7 @@ import sys
 
 DEFAULT_PORT = 5000
 
+
 def usage(exitcode = 1):
     """
     Show usage info and exit.
@@ -22,12 +23,13 @@ def usage(exitcode = 1):
     print '    --port=N   UDP port number to listen. Default is 5000.'
     sys.exit(exitcode)
 
+
 def main():
     """
     Entry point.
     """
     try:
-        cmd_opts, cmd_args = getopt.getopt(
+        cmd_opts, _cmd_args = getopt.getopt(
             sys.argv[1:], '', ['port=', 'quiet'])
     except getopt.GetoptError as exc:
         print str(exc)
