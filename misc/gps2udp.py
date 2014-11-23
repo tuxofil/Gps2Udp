@@ -31,7 +31,7 @@ def main():
             sys.argv[1:], '', ['port=', 'quiet'])
     except getopt.GetoptError as exc:
         print str(exc)
-        usage
+        usage()
     cmd_opts = dict(cmd_opts)
     port = int(cmd_opts.get('--port', str(DEFAULT_PORT)))
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
