@@ -19,6 +19,11 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+
 /**
  * Implements alarm receiver and facility to enable/disable
  * the periodic alarms.
@@ -48,8 +53,19 @@ public class Receiver extends BroadcastReceiver
 
     public void onLocationChanged(Location location) {
         String formattedLocation = formatLocation(location);
-        send(config.getHost(), config.getPort(),
-             formattedLocation + "\n");
+        if(config.isSigned()){
+            String secret = config.getSecret();
+            if(secret.length() > 0){
+                formattedLocation =
+                    formattedLocation + " " +
+                    sha1(formattedLocation + secret);
+                send(config.getHost(), config.getPort(),
+                     formattedLocation + "\n");
+            }
+        }else{
+            send(config.getHost(), config.getPort(),
+                 formattedLocation + "\n");
+        }
         schedule(context);
     }
 
@@ -150,5 +166,22 @@ public class Receiver extends BroadcastReceiver
         } catch (Exception e) {
             System.err.println(e);
         }
+    }
+
+    /**
+     * Return hex digest for the string.
+     */
+    private String sha1(String data){
+        try{
+            MessageDigest h = MessageDigest.getInstance("SHA-1");
+            h.reset();
+            h.update(data.getBytes("UTF-8"));
+            return new BigInteger(1, h.digest()).toString(16).toLowerCase();
+        }catch(NoSuchAlgorithmException exc){
+            exc.printStackTrace();
+        }catch(UnsupportedEncodingException exc){
+            exc.printStackTrace();
+        }
+        return null;
     }
 }

@@ -54,6 +54,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Use paid Geo sources, if available"/>
+    <CheckBox
+        android:id="@+id/signed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Signed mode"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Secret (for the signed mode)"/>
+    <EditText
+        android:id="@+id/secret"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:inputType="text"/>
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

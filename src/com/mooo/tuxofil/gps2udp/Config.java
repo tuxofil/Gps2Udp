@@ -17,6 +17,8 @@ public class Config {
     public static final String CFG_PERIOD = "cfg_period";
     public static final String CFG_BEST_ACCURACY = "cfg_best_accuracy";
     public static final String CFG_PAID_SOURCES = "cfg_paid_sources";
+    public static final String CFG_SIGNED = "cfg_signed";
+    public static final String CFG_SECRET = "cfg_secret";
 
     // Default values for the configuration items
     private static final boolean DEF_ENABLED = false;
@@ -25,6 +27,8 @@ public class Config {
     private static final int DEF_PERIOD = 1;
     private static final boolean DEF_BEST_ACCURACY = false;
     private static final boolean DEF_PAID_SOURCES = false;
+    private static final boolean DEF_SIGNED = false;
+    private static final String DEF_SECRET = "";
 
     private SharedPreferences sharedPreferences;
 
@@ -81,10 +85,25 @@ public class Config {
     }
 
     /**
+     * Return true if in signed mode.
+     */
+    public boolean isSigned() {
+        return sharedPreferences.getBoolean(CFG_SIGNED, DEF_SIGNED);
+    }
+
+    /**
+     * Return secret string.
+     */
+    public String getSecret() {
+        return sharedPreferences.getString(CFG_SECRET, DEF_SECRET);
+    }
+
+    /**
      * Set new values for the configuration items.
      */
     public void set(boolean enabled, String host, int port, int period,
-                    boolean bestAccuracy, boolean paidSources) {
+                    boolean bestAccuracy, boolean paidSources,
+                    boolean isSigned, String secret) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(CFG_ENABLED, enabled);
         editor.putString(CFG_HOST, host);
@@ -92,6 +111,8 @@ public class Config {
         editor.putInt(CFG_PERIOD, period);
         editor.putBoolean(CFG_BEST_ACCURACY, bestAccuracy);
         editor.putBoolean(CFG_PAID_SOURCES, paidSources);
+        editor.putBoolean(CFG_SIGNED, isSigned);
+        editor.putString(CFG_SECRET, secret);
         editor.apply();
     }
 }

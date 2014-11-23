@@ -33,6 +33,10 @@ public class Activity extends android.app.Activity {
             setChecked(config.isBestAccuracy());
         ((CheckBox) findViewById(R.id.paid_sources)).
             setChecked(config.isPaidSources());
+        ((CheckBox) findViewById(R.id.signed)).
+            setChecked(config.isSigned());
+        ((EditText) findViewById(R.id.secret)).
+            setText(config.getSecret());
     }
 
     /**
@@ -77,8 +81,12 @@ public class Activity extends android.app.Activity {
             ((CheckBox) findViewById(R.id.best_accuracy)).isChecked();
         boolean paidSources =
             ((CheckBox) findViewById(R.id.paid_sources)).isChecked();
+        boolean signed =
+            ((CheckBox) findViewById(R.id.signed)).isChecked();
+        String secret = _getText(R.id.secret);
         (new Config(this)).set(enabled, host, port, period,
-                               bestAccuracy, paidSources);
+                               bestAccuracy, paidSources,
+                               signed, secret);
     }
 
     /**
