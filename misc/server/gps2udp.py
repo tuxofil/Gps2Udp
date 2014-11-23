@@ -112,7 +112,7 @@ def parse_packet(data, signed = False):
     """
     global LAST_TIMESTAMP
     result = {}
-    tokens = [elem for elem in data.split(' ') if elem]
+    tokens = [elem for elem in data.strip().split(' ') if elem]
     if signed:
         # check the signature
         if len(tokens) < 5:
