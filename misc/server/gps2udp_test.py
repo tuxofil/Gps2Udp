@@ -5,6 +5,8 @@ Unit test for the Gps2Udp server.
 """
 
 import gps2udp
+import hashlib
+import os
 import time
 import unittest
 
@@ -18,6 +20,8 @@ class TestGps2UdpServer(unittest.TestCase):
         """
         Test the gps2udp.parse_packet() function
         """
+        # reset internal state of the gps2udp module
+        gps2udp.LAST_TIMESTAMP = None
         # bad timestamp
         time_from_the_past = int(time.time()) - gps2udp.MAX_TIME_DIFF * 2
         self.assertRaises(
@@ -126,6 +130,67 @@ class TestGps2UdpServer(unittest.TestCase):
             str(time_from_the_future) + ' 1.1 2.2 3')
 
 
+    def test_parse_packet_signed(self):
+        """
+        Test the gps2udp.parse_packet() function
+        in the SIGNED mode.
+        """
+        # reset internal state of the gps2udp module
+        gps2udp.LAST_TIMESTAMP = None
+        # set the secret
+        secret = sha1(str(time.time()))
+        os.environ['GPS2UDP_SECRET'] = secret
+        now = int(time.time())
+        # bad packet (without the digest)
+        self.assertRaises(
+            gps2udp.PacketParseError,
+            gps2udp.parse_packet,
+            str(now) + ' 1.1 2.2 3',
+            signed = True)
+        # bad packet (digest is bad)
+        self.assertRaises(
+            gps2udp.PacketParseError,
+            gps2udp.parse_packet,
+            str(now) + ' 1.1 2.2 3 bad_digest',
+            signed = True)
+        # good packet
+        payload = str(now) + ' 1.1 2.2 3'
+        self.assertDictEqual(
+            {'timestamp': now,
+             'latitude': 1.1,
+             'longitude': 2.2,
+             'accuracy': 3},
+            gps2udp.parse_packet(
+                payload + ' ' + sha1(payload + secret),
+                signed = True))
+        # another good packet
+        payload = str(now + 1) + ' 1.1 2.2 3'
+        self.assertDictEqual(
+            {'timestamp': now + 1,
+             'latitude': 1.1,
+             'longitude': 2.2,
+             'accuracy': 3},
+            gps2udp.parse_packet(
+                payload + ' ' + sha1(payload + secret),
+                signed = True))
+        # bad packet again
+        payload = str(now + 2) + ' 1.1 2.2 3'
+        self.assertRaises(
+            gps2udp.PacketParseError,
+            gps2udp.parse_packet,
+            payload + ' ' + sha1(payload + secret) + 'erroneous',
+            signed = True)
+        # another valid one, without trailing mess
+        self.assertDictEqual(
+            {'timestamp': now + 2,
+             'latitude': 1.1,
+             'longitude': 2.2,
+             'accuracy': 3},
+            gps2udp.parse_packet(
+                payload + ' ' + sha1(payload + secret),
+                signed = True))
+
+
     def test_format_packet(self):
         """
         Test the gps2udp.parse_packet() function
@@ -144,6 +209,15 @@ class TestGps2UdpServer(unittest.TestCase):
                  'latitude': -2,
                  'longitude': 3.4567890123,
                  'accuracy': 456}))
+
+
+def sha1(data):
+    """
+    Return SHA1 digest for the string
+    """
+    h = hashlib.sha1()
+    h.update(data)
+    return h.hexdigest()
 
 
 if __name__ == '__main__':

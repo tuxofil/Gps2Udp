@@ -16,9 +16,28 @@ There is some requirements to a valid incoming packet:
  MAX_ACCURACY variable see below).
 
 If any of the requirements are not met, the packet will be silently ignored.
+
+When started with --signed command line option, an extra field must
+be defined in each incoming UDP packet - DIGEST. With the field common
+packet format must be of form:
+
+   TIMESTAMP LATITUDE LONGITUDE ACCURACY DIGEST
+
+DIGEST - is a SHA1 from "TIMESTAMP LATITUDE LONGITUDE ACCURACY" + secret
+string known only by Gps2Udp client (Android app) and the server. The
+server reads the secret from GPS2UDP_SECRET environment variable.
+
+Important notes. When in --signed mode:
+- any packet without the digest will be ignored;
+- any packet with digest not matched with digest calculated on the
+ server side, will be ignored;
+- if the secret is not defined (GPS2UDP_SECRET environment variable is not
+ set or empty), no packets will be matched as valid.
 """
 
 import getopt
+import hashlib
+import os
 import os.path
 import socket
 import sys
@@ -43,6 +62,7 @@ def usage(exitcode = 1):
     argv0 = os.path.basename(sys.argv[0])
     print 'Usage: {0} [options]'.format(argv0)
     print '  Options:'
+    print '    --signed   check every UDP packet for digital signature;'
     print '    --port=N   UDP port number to listen. Default is 5000.'
     sys.exit(exitcode)
 
@@ -53,18 +73,19 @@ def main():
     """
     try:
         cmd_opts, _cmd_args = getopt.getopt(
-            sys.argv[1:], '', ['port='])
+            sys.argv[1:], '', ['port=', 'signed'])
     except getopt.GetoptError as exc:
         sys.stderr.write('Error: ' + str(exc) + '\n')
         usage()
     cmd_opts = dict(cmd_opts)
     port = int(cmd_opts.get('--port', str(DEFAULT_PORT)))
+    signed = '--signed' in cmd_opts
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind(('', port))
     while True:
         data, _addr = sock.recvfrom(100)
         try:
-            result = parse_packet(data)
+            result = parse_packet(data, signed)
         except PacketParseError:
             continue
         sys.stdout.write(format_packet(result))
@@ -76,7 +97,7 @@ class PacketParseError(Exception):
     pass
 
 
-def parse_packet(data):
+def parse_packet(data, signed = False):
     """
     Parse and check incoming packet.
     The packet must be of form:
@@ -84,14 +105,33 @@ def parse_packet(data):
 
     :param data: packet body
     :type data: string
+    :param signed: if True, the packet will be checked for a
+        valid digital signature
+    :type signed: boolean
     :rtype: dict
     """
     global LAST_TIMESTAMP
     result = {}
     tokens = [elem for elem in data.split(' ') if elem]
-    # check tokens count
-    if len(tokens) < 4:
-        raise PacketParseError
+    if signed:
+        # check the signature
+        if len(tokens) < 5:
+            raise PacketParseError
+        payload = ' '.join(tokens[:4])
+        digest = tokens[4]
+        secret = os.environ.get('GPS2UDP_SECRET')
+        if secret is None or len(secret) == 0:
+            # secret is not defined => unable to check
+            raise PacketParseError
+        hasher = hashlib.sha1()
+        hasher.update(payload + secret)
+        if hasher.hexdigest() != digest:
+            # digital signature mismatch
+            raise PacketParseError
+    else:
+        # check tokens count
+        if len(tokens) < 4:
+            raise PacketParseError
     # parse the tokens
     try:
         result['timestamp'] = int(tokens[0])

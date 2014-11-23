@@ -16,6 +16,27 @@ There is some requirements to a valid incoming packet:
 
 If any of the requirements are not met, the packet will be silently ignored.
 
+## Signed mode
+
+When started with --signed command line option, an extra field must
+be defined in each incoming UDP packet - DIGEST. With the field common
+packet format must be of form:
+
+```
+TIMESTAMP LATITUDE LONGITUDE ACCURACY DIGEST
+```
+
+DIGEST - is a SHA1 from "TIMESTAMP LATITUDE LONGITUDE ACCURACY" + secret
+string known only by Gps2Udp client (Android app) and the server. The
+server reads the secret from GPS2UDP_SECRET environment variable.
+
+Important notes. When in _--signed_ mode:
+* any packet without the digest will be ignored;
+* any packet with digest not matched with digest calculated on the
+ server side, will be ignored;
+* if the secret is not defined (GPS2UDP_SECRET environment variable is not
+ set or empty), no packets will be matched as valid.
+
 ## Requirements
 
 * Python 2.7 or later.
