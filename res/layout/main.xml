@@ -1,60 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
-  <ToggleButton
-      android:id="@+id/btn_enabled"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:textOn="Enabled"
-      android:textOff="Disabled"
-      android:onClick="onOnOffClicked"/>
-  <TextView
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:text="Destination host"/>
-  <EditText
-      android:id="@+id/dst_host"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:text="10.0.0.100"
-      android:inputType="text"/>
-  <TextView
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:text="Destination port"/>
-  <EditText
-      android:id="@+id/dst_port"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:text="5000"
-      android:inputType="number"/>
-  <TextView
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:text="Period, seconds"/>
-  <EditText
-      android:id="@+id/send_period"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:text="1"
-      android:inputType="number"/>
-  <CheckBox
-      android:id="@+id/best_accuracy"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="The best accuracy"
-      android:hint="Consumes more power"/>
-  <CheckBox
-      android:id="@+id/paid_sources"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Use paid Geo sources, if available"/>
-  <Button
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:text="@string/apply_button_text"
-      android:onClick="onApplyClicked"/>
-</LinearLayout>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+  <LinearLayout android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+    <ToggleButton
+        android:id="@+id/btn_enabled"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textOn="Enabled"
+        android:textOff="Disabled"
+        android:onClick="onOnOffClicked"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Destination host"/>
+    <EditText
+        android:id="@+id/dst_host"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="10.0.0.100"
+        android:inputType="text"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Destination port"/>
+    <EditText
+        android:id="@+id/dst_port"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="5000"
+        android:inputType="number"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Period, seconds"/>
+    <EditText
+        android:id="@+id/send_period"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:inputType="number"/>
+    <CheckBox
+        android:id="@+id/best_accuracy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="The best accuracy"
+        android:hint="Consumes more power"/>
+    <CheckBox
+        android:id="@+id/paid_sources"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use paid Geo sources, if available"/>
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/apply_button_text"
+        android:onClick="onApplyClicked"/>
+  </LinearLayout>
+</ScrollView>
