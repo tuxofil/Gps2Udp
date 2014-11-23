@@ -105,7 +105,7 @@ function MDateTimePicker(newDate, onlydate){
      */
     this.getDayButtonID = function (row, col) {
         return "db" + this.identifier + "r" +
-	    (row || "0") + "c" + (col || "0");
+            (row || "0") + "c" + (col || "0");
     }
 
     /**
@@ -172,7 +172,7 @@ function MDateTimePicker(newDate, onlydate){
             for(var col = 0; col < 7; col++){
                 this.setDayButtonValue(row, col, '');
                 this.getDayButton(row, col).style.backgroundColor =
-		    'transparent';
+                    'transparent';
             }
     }
 
@@ -200,9 +200,9 @@ function MDateTimePicker(newDate, onlydate){
 
             // if the day is today then select it
             if(year == currentYear &&
-	       month == currentMonth &&
-	       day == currentDay)
-		this.getDayButton(row, col).style.backgroundColor = 'red';
+               month == currentMonth &&
+               day == currentDay)
+                this.getDayButton(row, col).style.backgroundColor = 'red';
 
             col++;
             if(col > 6) {
@@ -220,35 +220,35 @@ function MDateTimePicker(newDate, onlydate){
     this.updateControls = function () {
         // update 'Year' and 'Month' fields
         document.getElementById(
-	    "id" + this.identifier + "year").value =
-	    this.date.getFullYear();
+            "id" + this.identifier + "year").value =
+            this.date.getFullYear();
         var realMonth = this.date.getMonth() + 1;
         document.getElementById(
-	    "id" + this.identifier + "month").value =
-	    ((realMonth < 10)?"0":"") + realMonth;
+            "id" + this.identifier + "month").value =
+            ((realMonth < 10)?"0":"") + realMonth;
         // update 'hours' and 'mins' fields
         if(!this.dateOnly){
             document.getElementById(
-		"id" + this.identifier + "hour").value =
-		((this.date.getHours() < 10)?"0":"") +
-		this.date.getHours();
+                "id" + this.identifier + "hour").value =
+                ((this.date.getHours() < 10)?"0":"") +
+                this.date.getHours();
             document.getElementById(
-		"id" + this.identifier + "minute").value =
-		((this.date.getMinutes() < 10)?"0":"") +
-		this.date.getMinutes();
+                "id" + this.identifier + "minute").value =
+                ((this.date.getMinutes() < 10)?"0":"") +
+                this.date.getMinutes();
         }
         // update the main control
         document.getElementById("id" + this.identifier + "main").value =
             ((this.date.getDate() < 10)?"0":"") +
-	    this.date.getDate() + "/" +
+            this.date.getDate() + "/" +
             ((this.date.getMonth() + 1 < 10)?"0":"") +
-	    (this.date.getMonth() + 1) + "/" +
+            (this.date.getMonth() + 1) + "/" +
             this.date.getFullYear() +
             ((this.dateOnly)?"":(" " +
-				 ((this.date.getHours() < 10)?"0":"") +
-				 this.date.getHours() + ":" +
-				 ((this.date.getMinutes() < 10)?"0":"") +
-				 this.date.getMinutes()));
+                                 ((this.date.getHours() < 10)?"0":"") +
+                                 this.date.getHours() + ":" +
+                                 ((this.date.getMinutes() < 10)?"0":"") +
+                                 this.date.getMinutes()));
     }
 
     /**
@@ -293,7 +293,7 @@ function MDateTimePicker(newDate, onlydate){
      */
     this.translate2row = function (day) {
         day += this.getFirstDayOfMonth(this.date.getFullYear(),
-				       this.date.getMonth()) - 1;
+                                       this.date.getMonth()) - 1;
         var col = 0;
         while(day > 6) {
             day -= 7;
@@ -308,15 +308,15 @@ function MDateTimePicker(newDate, onlydate){
      */
     this.translate2col = function (day) {
         day += this.getFirstDayOfMonth(this.date.getFullYear(),
-				       this.date.getMonth()) - 1;
+                                       this.date.getMonth()) - 1;
         while(day > 6) day -= 7;
         return day;
     }
 
     this.translate2day = function (row, col) {
         return (row * 7) + col -
-	    this.getFirstDayOfMonth(
-		this.date.getFullYear(), this.date.getMonth()) + 1;
+            this.getFirstDayOfMonth(
+                this.date.getFullYear(), this.date.getMonth()) + 1;
     }
 
     this.addYear = function (years) {
@@ -342,14 +342,14 @@ function MDateTimePicker(newDate, onlydate){
 
     this.showDialog = function () {
         this.setHidden(
-	    document.getElementById(
-		"id" + this.identifier + "dialog"), true);
+            document.getElementById(
+                "id" + this.identifier + "dialog"), true);
     }
 
     this.hideDialog = function () {
         this.setHidden(
-	    document.getElementById(
-		"id" + this.identifier + "dialog"), false);
+            document.getElementById(
+                "id" + this.identifier + "dialog"), false);
         this.fireDateChanged();
         // fire event handler, if defined
         if(this.onChange) this.onChange();
@@ -373,16 +373,16 @@ function MDateTimePicker(newDate, onlydate){
 
     this.dateOnly = onlydate;
     var spinBtnStyle =
-	'margin:0; padding:0; font-size:10; border-style:none; ' +
-	'border-width:0; cursor:hand; color:navy; ';
+        'margin:0; padding:0; font-size:10; border-style:none; ' +
+        'border-width:0; cursor:hand; color:navy; ';
     var inpStyle =
-	'margin:0; padding:0; font-size:10; border-style:none; ' +
-	'border-width:0; text-align:center;';
+        'margin:0; padding:0; font-size:10; border-style:none; ' +
+        'border-width:0; text-align:center;';
 
     // create an HTML table with buttons
     document.writeln(
-	"<span id='id" + this.identifier + "dialog' " +
-	    "style='position:absolute; display:none; z-index:9999'>");
+        "<span id='id" + this.identifier + "dialog' " +
+            "style='position:absolute; display:none; z-index:9999'>");
     document.writeln(
         "<br clear=all><table " +
             "cellspacing=0 cellpadding=0 border=1 " +
@@ -390,23 +390,23 @@ function MDateTimePicker(newDate, onlydate){
             "<tr><td colspan=7 style='margin:0; padding:0; font-size:10;'>" +
             "Year:&nbsp;" +
             "<span id='id" + this.identifier + "yeard' style='" +
-	    spinBtnStyle + "' " +
+            spinBtnStyle + "' " +
             "onclick='this.pickerLink.addYear(-1);'>&lt;</span>" +
             "<input type=edit id='id" + this.identifier +
-	    "year' size=4 style='" + inpStyle + "' " +
+            "year' size=4 style='" + inpStyle + "' " +
             "onchange='this.pickerLink.setYear(this.value);'>" +
             "<span id='id" + this.identifier + "yeari' style='" +
-	    spinBtnStyle + "' " +
+            spinBtnStyle + "' " +
             "onclick='this.pickerLink.addYear(1);'>&gt;</span>" +
             "&nbsp;Month:&nbsp;" +
             "<span id='id" + this.identifier + "monthd' style='" +
-	    spinBtnStyle + "' " +
+            spinBtnStyle + "' " +
             "onclick='this.pickerLink.addMonth(-1);'>&lt;</span>" +
             "<input type=edit id='id" + this.identifier +
-	    "month' size=2 style='" + inpStyle + "' " +
+            "month' size=2 style='" + inpStyle + "' " +
             "onchange='this.pickerLink.setMonth(this.value);'>" +
             "<span id='id" + this.identifier + "monthi' style='" +
-	    spinBtnStyle + "' " +
+            spinBtnStyle + "' " +
             "onclick='this.pickerLink.addMonth(1);'>&gt;</span>" +
             "</td></tr>" +
             "<tr style='text-align:center;'>" +
@@ -419,32 +419,32 @@ function MDateTimePicker(newDate, onlydate){
             "<td style='color:red'><tt><b>Su</b></tt></td>" +
             "</tr>");
     document.getElementById(
-	"id" + this.identifier + "yeard").pickerLink = this;
+        "id" + this.identifier + "yeard").pickerLink = this;
     document.getElementById(
-	"id" + this.identifier + "year").pickerLink = this;
+        "id" + this.identifier + "year").pickerLink = this;
     document.getElementById(
-	"id" + this.identifier + "yeari").pickerLink = this;
+        "id" + this.identifier + "yeari").pickerLink = this;
     document.getElementById(
-	"id" + this.identifier + "monthd").pickerLink = this;
+        "id" + this.identifier + "monthd").pickerLink = this;
     document.getElementById(
-	"id" + this.identifier + "month").pickerLink = this;
+        "id" + this.identifier + "month").pickerLink = this;
     document.getElementById(
-	"id" + this.identifier + "monthi").pickerLink = this;
+        "id" + this.identifier + "monthi").pickerLink = this;
     var inputStyle =
-	"border-style:none; border-width:0; padding:0; margin:0; " +
+        "border-style:none; border-width:0; padding:0; margin:0; " +
         "background-color:transparent; font-size:10; width:25; ";
     for(var row = 0; row < 6; row++){
         document.writeln("<tr>");
         for(var col = 0; col < 7; col++){
             document.writeln(
-		"<td><center><input id='" +
-		    this.getDayButtonID(row, col) + "' " +
+                "<td><center><input id='" +
+                    this.getDayButtonID(row, col) + "' " +
                     "style='" + inputStyle + "' " +
                     "type=button " +
                     "onclick='this.pickerLink.selectCell(" + row + "," +
-		    col + ");'></center></td>");
+                    col + ");'></center></td>");
             document.getElementById(
-		this.getDayButtonID(row, col)).pickerLink = this;
+                this.getDayButtonID(row, col)).pickerLink = this;
         }
         document.writeln("</tr>");
     }
@@ -456,59 +456,59 @@ function MDateTimePicker(newDate, onlydate){
         document.write(
             "Time:&nbsp;" +
                 "<span id='id" + this.identifier + "hourd' style='" +
-		spinBtnStyle + "' " +
+                spinBtnStyle + "' " +
                 "onclick='this.pickerLink.addHour(-1);'>&lt;</span>" +
                 "<input type=edit   id='id" + this.identifier +
-		"hour'   size=2 style='" + inpStyle + "' " +
+                "hour'   size=2 style='" + inpStyle + "' " +
                 "onchange='this.pickerLink.setHours(this.value);'>" +
                 "<span id='id" + this.identifier + "houri' style='" +
-		spinBtnStyle + "' " +
+                spinBtnStyle + "' " +
                 "onclick='this.pickerLink.addHour(1);'>&gt;</span>" +
                 "&nbsp;:&nbsp;" +
                 "<span id='id" + this.identifier + "minuted' style='" +
-		spinBtnStyle + "' " +
+                spinBtnStyle + "' " +
                 "onclick='this.pickerLink.addMinute(-1);'>&lt;</span>" +
                 "<input type=edit   id='id" + this.identifier +
-		"minute'  size=2 style='" + inpStyle + "' " +
+                "minute'  size=2 style='" + inpStyle + "' " +
                 "onchange='this.pickerLink.setMinutes(this.value);'>" +
                 "<span id='id" + this.identifier + "minutei' style='" +
-		spinBtnStyle + "' " +
+                spinBtnStyle + "' " +
                 "onclick='this.pickerLink.addMinute(1);'>&gt;</span>" +
                 "&nbsp;&nbsp;");
     }
     document.write(
         "<input  id='id" + this.identifier +
-	    "dlgok' type=button value='OK' " +
+            "dlgok' type=button value='OK' " +
             "style='padding:0; margin:0; font-size:10;' " +
             "onclick='this.pickerLink.hideDialog();'>");
     if(this.dateOnly) document.write("</div>");
     document.writeln("</td></tr></table></span>");
     if(!this.dateOnly){
         document.getElementById(
-	    "id" + this.identifier + "hourd").pickerLink = this;
+            "id" + this.identifier + "hourd").pickerLink = this;
         document.getElementById(
-	    "id" + this.identifier + "hour").pickerLink = this;
+            "id" + this.identifier + "hour").pickerLink = this;
         document.getElementById(
-	    "id" + this.identifier + "houri").pickerLink = this;
+            "id" + this.identifier + "houri").pickerLink = this;
         document.getElementById(
-	    "id" + this.identifier + "minuted").pickerLink = this;
+            "id" + this.identifier + "minuted").pickerLink = this;
         document.getElementById(
-	    "id" + this.identifier + "minute").pickerLink = this;
+            "id" + this.identifier + "minute").pickerLink = this;
         document.getElementById(
-	    "id" + this.identifier + "minutei").pickerLink = this;
+            "id" + this.identifier + "minutei").pickerLink = this;
     }
     document.getElementById(
-	"id" + this.identifier + "dlgok").pickerLink = this;
+        "id" + this.identifier + "dlgok").pickerLink = this;
 
     document.writeln(
-	"<span style='font-family:verdana,tahoma,arial; '>" +
-	    "<input type=edit id='id" + this.identifier + "main' " +
-	    "style='margin:0; padding:0; font-size:10; " +
-	    "border-style:solid; border-width:1;' " +
-	    "onfocus='this.pickerLink.switchDialog();'>" +
-	    "</span>");
+        "<span style='font-family:verdana,tahoma,arial; '>" +
+            "<input type=edit id='id" + this.identifier + "main' " +
+            "style='margin:0; padding:0; font-size:10; " +
+            "border-style:solid; border-width:1;' " +
+            "onfocus='this.pickerLink.switchDialog();'>" +
+            "</span>");
     document.getElementById(
-	"id" + this.identifier + "main").pickerLink = this;
+        "id" + this.identifier + "main").pickerLink = this;
 
     // let's set button captions
     this.fireDateChanged();
