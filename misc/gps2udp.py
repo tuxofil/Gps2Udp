@@ -2,7 +2,7 @@
 
 """
 Receive Geo location data from the Gps2Udp Android application
-and forward them to the stdout line by line.
+via UDP/IP and forward them to the stdout line by line.
 
 There is some requirements to a valid incoming packet:
 - it must be of form: TIMESTAMP LATITUDE LONGITUDE ACCURACY [other fields];
