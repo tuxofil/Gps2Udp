@@ -30,7 +30,7 @@ def main():
     """
     try:
         cmd_opts, _cmd_args = getopt.getopt(
-            sys.argv[1:], '', ['port=', 'quiet'])
+            sys.argv[1:], '', ['port='])
     except getopt.GetoptError as exc:
         print str(exc)
         usage()
