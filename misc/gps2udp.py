@@ -32,7 +32,7 @@ def main():
         cmd_opts, _cmd_args = getopt.getopt(
             sys.argv[1:], '', ['port='])
     except getopt.GetoptError as exc:
-        print str(exc)
+        sys.stderr.write('Error: ' + str(exc) + '\n')
         usage()
     cmd_opts = dict(cmd_opts)
     port = int(cmd_opts.get('--port', str(DEFAULT_PORT)))
